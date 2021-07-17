@@ -22,7 +22,7 @@ void show(){    //展示
 void allocate(int _len){    //分配，就是按顺序删掉空闲块
     for(int i = 0; i < _len; i++){
         if(pointer >= 3){
-            cout << "空间已满，分配失败" << endl;
+            cout << "空间已空，分配失败" << endl;
             return;
         }
         if(A[pointer][0] <= 0){
@@ -37,6 +37,30 @@ void allocate(int _len){    //分配，就是按顺序删掉空闲块
             }
         }
     }
+}
+
+void recovery(int _id){    //回收，就是向里面插入新的空闲块
+    if(pointer >= 3){
+        pointer--;
+    }
+    if(pointer < 0){
+        cout << "空心块过多，回收失败！" << endl;
+        return;
+    }
+    if(A[pointer][0] < 3){     //如果这个组还没满了
+        A[pointer][0]++;
+        int num = A[pointer][0];
+        A[pointer][num] = _id;
+        cout << "空闲块" << A[pointer][num] << "已被回收" <<endl;
+    }
+    else{
+        pointer--;
+        if(pointer < 0){
+            cout << "空心块过多，回收失败！" << endl;
+            return;
+        }
+    }
+
 }
 
 int main() {
@@ -73,9 +97,9 @@ int main() {
                 break;
             case 'r':
                 cout << "回收，请输入块号:";
-                int num;
-                cin >> num;
-
+                int id;
+                cin >> id;
+                recovery(id);
                 break;
             case 's':
                 cout << "展示" << endl;
